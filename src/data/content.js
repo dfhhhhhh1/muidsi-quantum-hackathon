@@ -15,26 +15,26 @@ export const EVENT = {
 
 export const CHALLENGES = [
   {
-    tag: 'PRIMARY CHALLENGE',
-    title: 'Multitenant Scheduler',
+    tag: 'PRIMARY CHALLENGE TEASER',
+    title: 'Hardware Optimization & Resource Allocation',
     blurb:
-      'Send a job to a quantum computer today and you get the whole machine, even if your circuit only needs a handful of its qubits. Everything else sits idle until you are finished. Write a scheduler that runs several users on one processor at the same time.',
+      'Current quantum processors have highly limited resources, and efficiency is everything. In this challenge, you will tackle the physical constraints of quantum hardware, finding algorithmic ways to maximize processor utility and manage complex system interference.',
     points: [
-      'Split a large qubit topology into separate partitions',
-      'Fit as many jobs on the machine as you can without losing fidelity',
-      'Handle cross-talk where two partitions share a boundary',
+      'Design algorithms for dynamic resource management',
+      'Model and mitigate hardware-level noise constraints',
+      'Tools to explore: Python, Qiskit/Cirq, and Graph Theory libraries (e.g., NetworkX)',
     ],
     accent: 'gold',
   },
   {
-    tag: 'ALTERNATIVE CHALLENGE',
-    title: 'Quantum Classifier',
+    tag: 'ALTERNATIVE CHALLENGE TEASER',
+    title: 'Hybrid Quantum-Classical Intelligence',
     blurb:
-      'Train a quantum circuit to sort data into categories. You will need to get classical data into a quantum state, tune the circuit against a training set, and then work out whether it actually beats an ordinary classical model on the same problem.',
+      'Bridge the gap between everyday data and quantum algorithms. You will explore how to feed classical information into quantum systems, optimize hybrid pipelines, and rigorously test whether a quantum approach actually offers an advantage over traditional methods.',
     points: [
-      'Encode classical data as quantum states',
-      'Train a variational circuit end to end',
-      'Measure it against a classical baseline',
+      'Build pipelines to encode and process complex datasets',
+      'Train parameterized models and benchmark performance',
+      'Tools to explore: PennyLane, Qiskit Machine Learning, PyTorch/TensorFlow, and Scikit-learn',
     ],
     accent: 'cyan',
   },

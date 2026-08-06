@@ -34,7 +34,20 @@ const STAGES = [
   { label: 'MXC', r: 0.95, y: -3.2, t: 0.14 },
 ];
 
-const COAX_COUNT = 28;
+const COAX_COUNT = 40;
+
+/**
+ * Radius of the vertical cage of coax running between stage `s` and `s + 1`.
+ *
+ * Constant for the whole span, sized to the LOWER (smaller) plate. This is what
+ * makes the runs perfectly vertical: on the real hardware each stage is a
+ * cylindrical cage of parallel lines, and the diameter steps down at each
+ * plate. Interpolating the radius between the two plates instead produces a
+ * cone, which is the single thing that most makes a fridge look fake.
+ *
+ * Coax, attenuators and coils all read from this so they stay concentric.
+ */
+const spanRadius = (s) => STAGES[s + 1].r - 0.32;
 
 export function Chandelier() {
   const spin = useRef(null);
@@ -78,7 +91,13 @@ export function Chandelier() {
       opacity: 0.42,
       side: THREE.DoubleSide,
     });
-    return { gold, goldDark, copper, steel, dark, shield };
+    // The pale cream bundle that fans out below the mixing chamber.
+    const wire = new THREE.MeshStandardMaterial({
+      color: '#E6DFCC',
+      metalness: 0.25,
+      roughness: 0.62,
+    });
+    return { gold, goldDark, copper, steel, dark, shield, wire };
   }, []);
 
   /* --------------------------------------------------------------- shared */
@@ -174,12 +193,22 @@ export function Chandelier() {
             </group>
           ))}
 
+          {/* ---- Central threaded shaft down the core ----------------------- */}
+          <mesh position={[0, 0.6, 0]} material={mats.steel}>
+            <cylinderGeometry args={[0.14, 0.11, 8.2, 20]} />
+          </mesh>
+          <ColumnThreads material={mats.steel} />
+
           {/* ---- Signal chain: coax runs + attenuators ---------------------- */}
           <CoaxRuns geometry={geos.coax} material={mats.copper} />
-          <Attenuators geometry={geos.attenuator} material={mats.steel} />
+          <Attenuators geometry={geos.attenuator} material={mats.gold} />
+          <Coils material={mats.steel} />
 
           {/* ---- Thermal braids on the lower stages ------------------------- */}
           <Braids geometry={geos.braid} material={mats.copper} />
+
+          {/* ---- Flexible wire bundle down to the sample -------------------- */}
+          <WireFan material={mats.wire} />
 
           {/* ---- Mixing chamber and the QPU package ------------------------- */}
           <mesh position={[0, -3.62, 0]} material={mats.gold}>
@@ -405,8 +434,12 @@ function SupportRods({ material }) {
 }
 
 /**
- * Coaxial signal lines. Each run steps inward from stage to stage, which is
- * the single most recognisable feature of a real dilution fridge.
+ * Coaxial signal lines: a dense cylindrical cage of parallel vertical runs
+ * between each pair of plates, stepping to a smaller diameter at every stage.
+ *
+ * These are dead vertical, with no rotation and no spiral offset. The cylinder
+ * geometry is already Y-aligned, so scaling it on Y and leaving rotation at
+ * identity is all that is needed.
  */
 function CoaxRuns({ geometry, material }) {
   const ref = useRef(null);
@@ -416,35 +449,21 @@ function CoaxRuns({ geometry, material }) {
     const mesh = ref.current;
     if (!mesh) return;
     const o = new THREE.Object3D();
-    const up = new THREE.Vector3(0, 1, 0);
-    const from = new THREE.Vector3();
-    const to = new THREE.Vector3();
-    const dir = new THREE.Vector3();
-    const q = new THREE.Quaternion();
     let i = 0;
 
-    for (let c = 0; c < COAX_COUNT; c++) {
-      const a = (c / COAX_COUNT) * Math.PI * 2;
-      // Slight spiral so the bundle does not look like a picket fence.
-      for (let s = 0; s < STAGES.length - 1; s++) {
-        const top = STAGES[s];
-        const bot = STAGES[s + 1];
-        const aTop = a + s * 0.04;
-        const aBot = a + (s + 1) * 0.04;
-        const rTop = top.r - 0.42;
-        const rBot = bot.r - 0.34;
+    for (let s = 0; s < STAGES.length - 1; s++) {
+      const top = STAGES[s];
+      const bot = STAGES[s + 1];
+      const r = spanRadius(s);
+      const yTop = top.y - top.t / 2;
+      const yBot = bot.y + bot.t / 2;
+      const h = yTop - yBot;
 
-        from.set(Math.cos(aTop) * rTop, top.y - top.t / 2, Math.sin(aTop) * rTop);
-        to.set(Math.cos(aBot) * rBot, bot.y + bot.t / 2, Math.sin(aBot) * rBot);
-
-        dir.subVectors(to, from);
-        const len = dir.length();
-        dir.normalize();
-
-        o.position.copy(from).addScaledVector(dir, len / 2);
-        q.setFromUnitVectors(up, dir);
-        o.quaternion.copy(q);
-        o.scale.set(1, len, 1);
+      for (let c = 0; c < COAX_COUNT; c++) {
+        const a = (c / COAX_COUNT) * Math.PI * 2;
+        o.position.set(Math.cos(a) * r, yBot + h / 2, Math.sin(a) * r);
+        o.rotation.set(0, 0, 0);
+        o.scale.set(1, h, 1);
         o.updateMatrix();
         mesh.setMatrixAt(i++, o.matrix);
       }
@@ -455,24 +474,30 @@ function CoaxRuns({ geometry, material }) {
   return <instancedMesh ref={ref} args={[geometry, material, count]} frustumCulled={false} />;
 }
 
-/** Attenuator packages bolted onto the coax where it crosses each plate. */
+/**
+ * Attenuator packages bolted onto the coax just below each plate.
+ *
+ * Sits at spanRadius() so the blocks land ON the vertical lines rather than
+ * floating at their own radius.
+ */
 function Attenuators({ geometry, material }) {
   const ref = useRef(null);
-  const stages = STAGES.slice(1, -1); // not on the top or bottom plate
-  const perStage = 14;
-  const count = stages.length * perStage;
+  // Spans below the open top section, where the real hardware is busiest.
+  const spans = [1, 2, 3, 4];
+  const perSpan = 16;
+  const count = spans.length * perSpan;
 
   useLayoutEffect(() => {
     const mesh = ref.current;
     if (!mesh) return;
     const o = new THREE.Object3D();
     let i = 0;
-    for (let s = 0; s < stages.length; s++) {
-      const stage = stages[s];
-      for (let k = 0; k < perStage; k++) {
-        const a = (k / perStage) * Math.PI * 2 + s * 0.12;
-        const r = stage.r - 0.38;
-        o.position.set(Math.cos(a) * r, stage.y + 0.2, Math.sin(a) * r);
+    for (const s of spans) {
+      const r = spanRadius(s);
+      const yTop = STAGES[s].y - STAGES[s].t / 2;
+      for (let k = 0; k < perSpan; k++) {
+        const a = (k / perSpan) * Math.PI * 2 + s * 0.1;
+        o.position.set(Math.cos(a) * r, yTop - 0.24, Math.sin(a) * r);
         o.rotation.set(0, -a, 0);
         o.scale.setScalar(1);
         o.updateMatrix();
@@ -485,10 +510,79 @@ function Attenuators({ geometry, material }) {
   return <instancedMesh ref={ref} args={[geometry, material, count]} frustumCulled={false} />;
 }
 
-/** Thick copper thermal braids linking the two coldest stages. */
+/**
+ * Thick copper thermal braids linking the two coldest stages. Vertical, and
+ * set just outside the coax cage so the two do not intersect.
+ */
 function Braids({ geometry, material }) {
   const ref = useRef(null);
   const count = 8;
+
+  useLayoutEffect(() => {
+    const mesh = ref.current;
+    if (!mesh) return;
+    const o = new THREE.Object3D();
+
+    const top = STAGES[STAGES.length - 2];
+    const bot = STAGES[STAGES.length - 1];
+    const r = bot.r - 0.1;
+    const yTop = top.y - top.t / 2;
+    const yBot = bot.y + bot.t / 2;
+    const h = yTop - yBot;
+
+    for (let i = 0; i < count; i++) {
+      const a = (i / count) * Math.PI * 2 + 0.2;
+      o.position.set(Math.cos(a) * r, yBot + h / 2, Math.sin(a) * r);
+      o.rotation.set(0, 0, 0);
+      o.scale.set(1, h, 1);
+      o.updateMatrix();
+      mesh.setMatrixAt(i, o.matrix);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+  }, []);
+
+  return <instancedMesh ref={ref} args={[geometry, material, count]} frustumCulled={false} />;
+}
+
+/**
+ * The threaded central shaft running down the core of the stack, and the ring
+ * of coiled cable loops at the colder stages. Both are prominent, immediately
+ * recognisable features of the real hardware.
+ */
+function ColumnThreads({ material }) {
+  const ref = useRef(null);
+  const geometry = useMemo(() => new THREE.TorusGeometry(0.2, 0.03, 6, 18), []);
+  const count = 26;
+
+  useLayoutEffect(() => {
+    const mesh = ref.current;
+    if (!mesh) return;
+    const o = new THREE.Object3D();
+    for (let i = 0; i < count; i++) {
+      o.position.set(0, 4.35 - i * 0.13, 0);
+      o.rotation.set(Math.PI / 2, 0, 0);
+      o.updateMatrix();
+      mesh.setMatrixAt(i, o.matrix);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+  }, []);
+
+  return <instancedMesh ref={ref} args={[geometry, material, count]} frustumCulled={false} />;
+}
+
+/**
+ * The pale wire bundle fanning out below the mixing chamber down to the chip.
+ *
+ * These DO splay, unlike everything above them, and that is correct: on the
+ * real hardware the rigid coax stops at the mixing chamber plate and the last
+ * run to the sample is flexible wiring. Keeping the splay confined to below
+ * the bottom plate is what makes it read as flexible wire instead of making
+ * the coax above look crooked.
+ */
+function WireFan({ material }) {
+  const ref = useRef(null);
+  const geometry = useMemo(() => new THREE.CylinderGeometry(0.012, 0.012, 1, 4), []);
+  const count = 40;
 
   useLayoutEffect(() => {
     const mesh = ref.current;
@@ -500,13 +594,14 @@ function Braids({ geometry, material }) {
     const dir = new THREE.Vector3();
     const q = new THREE.Quaternion();
 
-    const top = STAGES[STAGES.length - 2];
-    const bot = STAGES[STAGES.length - 1];
+    const mxc = STAGES[STAGES.length - 1];
+    const yTop = mxc.y - mxc.t / 2;
 
     for (let i = 0; i < count; i++) {
-      const a = (i / count) * Math.PI * 2 + 0.2;
-      from.set(Math.cos(a) * (top.r - 0.16), top.y - top.t / 2, Math.sin(a) * (top.r - 0.16));
-      to.set(Math.cos(a) * (bot.r - 0.12), bot.y + bot.t / 2, Math.sin(a) * (bot.r - 0.12));
+      const a = (i / count) * Math.PI * 2;
+      // Out at the plate edge, converging on the sample holder below.
+      from.set(Math.cos(a) * (mxc.r - 0.1), yTop, Math.sin(a) * (mxc.r - 0.1));
+      to.set(Math.cos(a) * 0.3, -4.24, Math.sin(a) * 0.3);
 
       dir.subVectors(to, from);
       const len = dir.length();
@@ -518,6 +613,37 @@ function Braids({ geometry, material }) {
       o.scale.set(1, len, 1);
       o.updateMatrix();
       mesh.setMatrixAt(i, o.matrix);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+  }, []);
+
+  return <instancedMesh ref={ref} args={[geometry, material, count]} frustumCulled={false} />;
+}
+
+/** Loops of coiled cable, mounted on the coax cage at the two lower spans. */
+function Coils({ material }) {
+  const ref = useRef(null);
+  const geometry = useMemo(() => new THREE.TorusGeometry(0.12, 0.022, 6, 16), []);
+  const spans = [2, 3];
+  const perSpan = 12;
+  const count = spans.length * perSpan;
+
+  useLayoutEffect(() => {
+    const mesh = ref.current;
+    if (!mesh) return;
+    const o = new THREE.Object3D();
+    let i = 0;
+    for (const s of spans) {
+      const r = spanRadius(s);
+      const yMid = (STAGES[s].y + STAGES[s + 1].y) / 2;
+      for (let k = 0; k < perSpan; k++) {
+        const a = (k / perSpan) * Math.PI * 2 + s * 0.2;
+        o.position.set(Math.cos(a) * r, yMid, Math.sin(a) * r);
+        // Face the loop outward so it reads as a circle from outside.
+        o.rotation.set(0, -a, 0);
+        o.updateMatrix();
+        mesh.setMatrixAt(i++, o.matrix);
+      }
     }
     mesh.instanceMatrix.needsUpdate = true;
   }, []);
