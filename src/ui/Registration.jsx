@@ -27,7 +27,7 @@ export function Registration() {
               />
               {/* Scanning sweep */}
               <div className="pointer-events-none absolute inset-3 overflow-hidden rounded">
-                <div className="h-full w-full animate-scan bg-gradient-to-b from-transparent via-q-cyan/40 to-transparent" />
+                <div className="h-full w-full animate-scan bg-gradient-to-b from-transparent via-mizzou-gold/30 to-transparent" />
               </div>
             </div>
             <div className="mt-3 text-center font-mono text-[10px] uppercase tracking-widest2 text-slate-500">
@@ -44,7 +44,7 @@ export function Registration() {
             </h3>
             <p className="mt-3 text-[15px] leading-relaxed text-slate-300/85">
               Come with a team or come on your own. If you are on your own, we will help you find a
-              group at the opening ceremony on October 2nd.
+              group at the opening ceremony.
             </p>
 
             <a

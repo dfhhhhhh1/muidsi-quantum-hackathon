@@ -7,9 +7,9 @@ export function Tutorials() {
     <Section id="tutorials" minH="min-h-[105vh]">
       <Reveal>
         <Heading
-          eyebrow="The Tutorial Series"
-          title="Four sessions, no prerequisites."
-          lede="They run in order across the week and assume you know nothing to begin with. Sit through all four and you will go from never having seen a qubit to training a circuit of your own."
+          eyebrow="Tutorials"
+          title=""
+          lede="These tutorials are meant to assist and supplement the learning during the hackathon, and will have time at the end for questions."
         />
       </Reveal>
 

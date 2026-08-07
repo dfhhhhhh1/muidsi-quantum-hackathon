@@ -67,7 +67,7 @@ const projected = new THREE.Vector3();
 const SUBJECTS = [
   { name: 'Earth', pos: [0, 0, LAYOUT.earthZ], radius: LAYOUT.earthRadius, from: 0.0, to: 0.22 },
   { name: 'Sun', pos: LAYOUT.sunPos, radius: LAYOUT.sunRadius * 13, from: 0.30, to: 0.42 },
-  { name: 'Satellite', pos: [0, 0, LAYOUT.satelliteZ], radius: 11, from: 0.46, to: 0.6 },
+  { name: 'Satellite', pos: [0, 0, LAYOUT.satelliteZ], radius: 8.6, from: 0.46, to: 0.6 },
   { name: 'Chandelier', pos: LAYOUT.chandelierPos, radius: 2.2, from: 0.82, to: 1.0 },
 ];
 

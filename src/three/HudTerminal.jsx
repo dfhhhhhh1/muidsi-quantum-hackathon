@@ -14,11 +14,17 @@ const TONE = {
   violet: 'text-[#c4b5fd]',
   gold: 'text-[#fcd34d]',
   green: 'text-[#86efac]',
+  red: 'text-[#fca5a5]',
+  blue: 'text-[#93c5fd]',
+  amber: 'text-[#fcd34d]',
+  magenta: 'text-[#f0abfc]',
+  crimson: 'text-[#fda4af]',
+  teal: 'text-[#5eead4]',
 };
 
 /** Lines containing WARNING/ALERT get pulled out in alert red regardless of tone. */
 function toneFor(line, blockTone) {
-  if (/WARNING|ALERT/.test(line)) return 'text-[#ff8f6b]';
+  if (/WARNING|ERROR|ALERT/.test(line)) return 'text-[#ff8f6b]';
   return TONE[blockTone] ?? TONE.cyan;
 }
 
@@ -78,8 +84,8 @@ function TerminalScreen({ active }) {
         <span className="text-[10px] tracking-widest text-slate-500">10 mK</span>
       </div>
 
-      {/* Log body, fixed height so the panel never resizes as lines land */}
-      <div className="scanlines relative h-[208px] overflow-hidden">
+      {/* Log body - overflow-hidden + flex flex-col justify-end anchors text to bottom without scrollbars */}
+      <div className="scanlines relative flex h-[208px] flex-col justify-end overflow-hidden">
         {lines.map((l, i) => (
           <div key={`${i}-${l.text}`} className={`${toneFor(l.text, l.tone)} whitespace-pre-wrap`}>
             {l.text}

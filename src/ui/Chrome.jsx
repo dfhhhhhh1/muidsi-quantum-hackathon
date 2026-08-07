@@ -3,10 +3,10 @@ import { scrollState, phaseAt } from '../scroll/scrollState.js';
 import { EVENT } from '../data/content.js';
 
 const PHASE_LABEL = {
-  earth: 'LEAVING ORBIT · EARTH',
-  satellite: 'APPROACH · ORBITAL PLATFORM',
-  interior: 'INTERIOR · COMPUTE BAY',
-  chandelier: 'QPU · DILUTION REFRIGERATOR',
+  earth: 'LEAVING ORBIT  EARTH',
+  satellite: 'APPROACH  ORBITAL PLATFORM',
+  interior: 'INTERIOR  COMPUTE BAY',
+  chandelier: 'QPU  DILUTION REFRIGERATOR',
 };
 
 const NAV = [
@@ -43,10 +43,15 @@ export function Chrome() {
         <div className="mx-auto flex max-w-[1600px] items-center justify-between px-5 py-4 sm:px-8">
           <a
             href="#top"
-            className="pointer-events-auto flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-widest2 text-slate-300 transition-colors hover:text-q-cyan"
+            className="pointer-events-auto group flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-widest2 text-slate-300 transition-colors hover:text-q-cyan"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-mizzou-gold shadow-glow-gold" />
-            MUIDSI · Quantum
+            <img
+              src="tigerLogo.png"
+              alt=""
+              aria-hidden="true"
+              className="h-5 w-auto drop-shadow-[0_0_10px_rgba(241,184,45,0.45)] transition-transform duration-300 group-hover:scale-110"
+            />
+            Quantum Innovation Center
           </a>
 
           <nav className="pointer-events-auto hidden items-center gap-7 md:flex">

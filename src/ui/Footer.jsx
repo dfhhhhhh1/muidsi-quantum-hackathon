@@ -10,9 +10,9 @@ export function Footer() {
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
               <img
-                src="universityLogo.png"
-                alt="University Logo"
-                className="h-11 w-auto opacity-90"
+                src="tigerLogo.png"
+                alt="Missouri Tigers"
+                className="h-10 w-auto drop-shadow-[0_0_14px_rgba(241,184,45,0.35)]"
               />
               <div>
                 <div className="font-display text-sm font-semibold text-white">{EVENT.host}</div>
@@ -28,16 +28,6 @@ export function Footer() {
             </a>
           </div>
 
-          <div className="rule my-7" />
-
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="font-mono text-[11px] text-slate-500">
-              {EVENT.title} · {EVENT.dateRange}
-            </p>
-            <p className="font-mono text-[11px] text-slate-600">
-              Hosted by {EVENT.org}
-            </p>
-          </div>
         </div>
       </Reveal>
     </Section>

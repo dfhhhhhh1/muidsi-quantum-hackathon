@@ -4,12 +4,12 @@
  */
 
 export const EVENT = {
-  title: 'MUIDSI Quantum Hackathon Fall Fest',
+  title: 'MU QIC Quantum Hackathon Fall Fest',
   subtitle: 'Developing the next generation of quantum applications.',
-  host: 'University of Missouri',
-  org: 'MU Institute for Data Science and Informatics',
+  host: 'University of Missouri - Columbia',
+  org: 'MU Electrical Engineering and Computer Science',
   dateRange: 'October 2nd to October 9th',
-  dateShort: 'OCTOBER 2 TO 9',
+  dateShort: 'October 2-9',
   registerUrl: 'https://missouri.yul1.qualtrics.com/jfe/preview/previewId/bfe9a54e-c3f7-40d6-b2da-28aff9587989/SV_cOAOwLdlsFTJDaS?Q_CHL=preview&Q_SurveyVersionID=current',
 };
 
@@ -18,7 +18,7 @@ export const CHALLENGES = [
     tag: 'PRIMARY CHALLENGE TEASER',
     title: 'Hardware Optimization & Resource Allocation',
     blurb:
-      'Current quantum processors have highly limited resources, and efficiency is everything. In this challenge, you will tackle the physical constraints of quantum hardware, finding algorithmic ways to maximize processor utility and manage complex system interference.',
+      '',
     points: [
       'Design algorithms for dynamic resource management',
       'Model and mitigate hardware-level noise constraints',
@@ -30,7 +30,7 @@ export const CHALLENGES = [
     tag: 'ALTERNATIVE CHALLENGE TEASER',
     title: 'Hybrid Quantum-Classical Intelligence',
     blurb:
-      'Bridge the gap between everyday data and quantum algorithms. You will explore how to feed classical information into quantum systems, optimize hybrid pipelines, and rigorously test whether a quantum approach actually offers an advantage over traditional methods.',
+      '',
     points: [
       'Build pipelines to encode and process complex datasets',
       'Train parameterized models and benchmark performance',
@@ -43,15 +43,15 @@ export const CHALLENGES = [
 export const RESOURCES = [
   {
     name: 'Flyers',
-    detail: 'Event details and the challenge briefs, ready to print, post, or hand to a classmate.',
+    detail: 'Event details and the challenge briefs with useful links for learning.',
   },
   {
     name: 'Slides',
-    detail: 'Every tutorial deck, posted before the session and left up afterwards.',
+    detail: 'Material used in our Quantum Learning courses will be provided.',
   },
   {
     name: 'Jupyter Notebooks',
-    detail: 'Code you can actually run. Starter circuits, sample data, and worked examples.',
+    detail: 'We will provide starting notebooks to help people not familiar with qiskit programming.',
   },
 ];
 
@@ -60,32 +60,32 @@ export const TUTORIALS = [
     id: '01',
     title: 'Introduction to Quantum Computing',
     blurb:
-      'Qubits, superposition, entanglement, and measurement. What the terms mean, and why a quantum computer can do things your laptop cannot.',
+      'Learn about the basics, such as Qubits, superposition, entanglement, and measurement. You will learn how to view problems from a quantum perspective.',
   },
   {
     id: '02',
     title: 'Qiskit and Circuit Building for Beginners',
     blurb:
-      'Build your first circuit, run it on a simulator, and learn to read the histogram that comes back.',
+      'Build your first circuit, run it on a simulator, and learn to read the output.',
   },
   {
     id: '03',
     title: 'Quantum Hardware and Quantum Circuit Transpilation',
     blurb:
-      'What the machines are actually made of, and why the circuit that runs is never quite the circuit you wrote.',
+      'Learn about different types of Quantum computers, and how our code transfers to the commands on the hardware.',
   },
   {
     id: '04',
     title: 'Quantum Machine Learning (QML) and Variational Quantum Circuits',
     blurb:
-      'Circuits with parameters you can tune, the cost function you tune them against, and the classical optimizer doing the tuning.',
+      'Learn what current algorithms are used for QML, and how hybrid HPC and QPU piplines work.',
   },
 ];
 
 export const SCHEDULE = [
   {
     date: '10/1',
-    day: 'Wednesday',
+    day: 'Thursday',
     label: 'Info sessions and first tutorials',
     items: [
       'Information sessions',
@@ -96,56 +96,56 @@ export const SCHEDULE = [
   },
   {
     date: '10/2',
-    day: 'Thursday',
+    day: 'Friday',
     label: 'Opening day',
     items: ['Hackathon starts', 'Opening ceremony'],
     phase: 'start',
   },
   {
     date: '10/3',
-    day: 'Friday',
+    day: 'Saturday',
     label: 'Build day',
     items: ['Hackathon weekend'],
     phase: 'build',
   },
   {
     date: '10/4',
-    day: 'Saturday',
+    day: 'Sunday',
     label: 'Build day',
     items: ['Hackathon weekend', 'Coffee hour', 'Quantum videogame lounge'],
     phase: 'build',
   },
   {
     date: '10/5',
-    day: 'Sunday',
+    day: 'Monday',
     label: 'Speaker and Q&A',
-    items: ['Speaker slot', 'Hackathon Q&A'],
+    items: ['Hackathon Q&A'],
     phase: 'build',
   },
   {
     date: '10/6',
-    day: 'Monday',
+    day: 'Tuesday',
     label: 'Speaker and tutorial',
     items: ['Speaker slot', "Qiskit and circuit building for beginners' tutorial"],
     phase: 'build',
   },
   {
     date: '10/7',
-    day: 'Tuesday',
+    day: 'Wednesday',
     label: 'Speaker and tutorial',
-    items: ['Speaker slot', 'QML and variational circuits tutorial'],
+    items: ['IBM Speaker', 'QML and variational circuits tutorial'],
     phase: 'build',
   },
   {
     date: '10/8',
-    day: 'Wednesday',
+    day: 'Thursday',
     label: 'Presentations and judging',
     items: ['Present hackathon projects', 'Judging'],
     phase: 'judge',
   },
   {
     date: '10/9',
-    day: 'Thursday',
+    day: 'Friday',
     label: 'Quantum Day and awards',
     items: [
       "University of Missouri's Quantum Day event",
@@ -162,6 +162,7 @@ export const SCHEDULE = [
  * `tone` maps to a color class in HudTerminal.
  */
 export const TERMINAL_BLOCKS = [
+  // --- Original Blocks ---
   {
     tone: 'cyan',
     lines: [
@@ -193,6 +194,57 @@ export const TERMINAL_BLOCKS = [
       '[Q-BIO] Protein folding simulation via Quantum Walk algorithm initiated...',
       '[Q-BIO] Analyzing molecular structures... Binding site affinity: 99.9%',
       '[Q-BIO] Isolating mutated cancer cells for precision targeting... Complete.',
+    ],
+  },
+
+  // --- New Blocks ---
+  {
+    tone: 'red',
+    lines: [
+      '[Q-HW] Dilution refrigerator cooling sequence... Base temp at 15 millikelvin.',
+      '[Q-HW] Performing T1/T2 coherence calibration sequence...',
+      '[Q-HW] ERROR: Cosmic ray interference detected on Qubit 42.',
+      '[Q-HW] Initiating dynamical decoupling sequence... State preserved.',
+    ],
+  },
+  {
+    tone: 'blue',
+    lines: [
+      '[Q-MAT] Simulating high-Tc cuprate superconductor electron pairing...',
+      '[Q-MAT] Applying Fermi-Hubbard model parameters to 2D lattice...',
+      '[Q-MAT] Entanglement topology mapped. Zero electrical resistance state confirmed.',
+    ],
+  },
+  {
+    tone: 'amber',
+    lines: [
+      '[Q-OPT] Quantum Approximate Optimization Algorithm (QAOA) engaged.',
+      '[Q-OPT] Processing global supply chain graph: 1.2 billion nodes.',
+      '[Q-OPT] Minimizing logistical friction... Optimal routing array generated in 0.4s.',
+    ],
+  },
+  {
+    tone: 'magenta',
+    lines: [
+      '[Q-ML] Loading classical dataset into quantum state vectors (QRAM)...',
+      '[Q-ML] Training Quantum Neural Network... Gradient descent converging.',
+      '[Q-ML] Generative adversarial network state collapse complete. Pattern identified.',
+    ],
+  },
+  {
+    tone: 'crimson',
+    lines: [
+      '[Q-CRYPT] Initiating Shor\'s Algorithm against target 4096-bit RSA key...',
+      '[Q-CRYPT] Quantum Fourier Transform applied. Measuring superposition...',
+      '[Q-CRYPT] Prime factors extracted successfully. Decryption key synthesized.',
+    ],
+  },
+  {
+    tone: 'teal',
+    lines: [
+      '[Q-RNG] True quantum randomness extraction protocol running...',
+      '[Q-RNG] Sampling vacuum state quantum fluctuations...',
+      '[Q-RNG] Absolute entropy seed generated. Injecting into classical hypervisor.',
     ],
   },
 ];

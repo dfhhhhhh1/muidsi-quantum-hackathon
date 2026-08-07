@@ -8,9 +8,9 @@ export function Hero() {
       <Reveal>
         <div className="mx-auto mb-9 flex items-center justify-center gap-4">
           <img
-            src="universityLogo.png"
-            alt="University Logo"
-            className="h-14 w-auto opacity-95 drop-shadow-[0_0_18px_rgba(241,184,45,0.35)] sm:h-16"
+            src="tigerLogo.png"
+            alt="Missouri Tigers"
+            className="h-12 w-auto drop-shadow-[0_0_20px_rgba(241,184,45,0.45)] sm:h-14"
           />
           <div className="hidden h-10 w-px bg-white/20 sm:block" />
           <div className="hidden text-left sm:block">
@@ -36,7 +36,7 @@ export function Hero() {
 
       <Reveal delay={220}>
         <h1 className="font-display text-[2.6rem] font-bold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-[5.2rem]">
-          <span className="block">MUIDSI Quantum</span>
+          <span className="block">Mizzou QIC</span>
           <span className="block bg-gradient-to-r from-mizzou-gold via-q-ice to-q-cyan bg-clip-text text-transparent text-glow-cyan">
             Hackathon Fall Fest
           </span>

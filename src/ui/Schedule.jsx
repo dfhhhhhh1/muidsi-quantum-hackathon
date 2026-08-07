@@ -16,8 +16,8 @@ export function Schedule() {
       <Reveal>
         <Heading
           eyebrow="Tentative Schedule"
-          title="What happens, and when."
-          lede="Rooms and times will be confirmed closer to the event. Everything below is the current plan."
+          title=""
+          lede="Rooms and times will be confirmed closer to the event. Below is the current plan."
           accent="gold"
         />
       </Reveal>

@@ -9,15 +9,15 @@ export function EventDetails() {
         <Reveal>
           <Heading
             eyebrow="Event Details"
-            title="A week of building on real quantum problems."
-            lede="The Institute for Data Science and Informatics is running a hackathon over eight days in October. You will work in a team on one of two challenges. If you have never touched a qubit, the tutorial series runs alongside the hackathon and starts from nothing."
+            title="Location: Columbia, MO in Lafferre."
+            lede="The MU Quantum Innovation Center (QIC) is running a hackathon in October. You will work in a team on one of two challenges. If you are new to quantum computing, the tutorial series runs alongside the hackathon."
           />
         </Reveal>
 
         <Reveal delay={140}>
           <div className="glass corner-brackets mt-9 grid grid-cols-1 gap-px overflow-hidden bg-white/[0.06] sm:grid-cols-3">
             <Stat label="Dates" value={EVENT.dateRange} accent />
-            <Stat label="Format" value="In person, in teams" />
+            <Stat label="Format" value="In person. UM System Students in teams of 2-5." />
             <Stat label="Experience" value="None required" />
           </div>
         </Reveal>
@@ -27,8 +27,8 @@ export function EventDetails() {
         <Reveal>
           <Heading
             eyebrow="The Challenges"
-            title="Two problems to choose from."
-            lede="Both are open questions in quantum computing, and both are scoped so that a team starting the week as beginners can still finish with something that works."
+            title=""
+            lede="Choose one of two provided prompts to work on with your team."
             accent="gold"
           />
         </Reveal>
