@@ -10,7 +10,7 @@ export const EVENT = {
   org: 'MU Electrical Engineering and Computer Science',
   dateRange: 'October 2nd to October 9th',
   dateShort: 'October 2-9',
-  registerUrl: 'https://missouri.yul1.qualtrics.com/jfe/preview/previewId/bfe9a54e-c3f7-40d6-b2da-28aff9587989/SV_cOAOwLdlsFTJDaS?Q_CHL=preview&Q_SurveyVersionID=current',
+  registerUrl: 'https://missouri.qualtrics.com/jfe/form/SV_cOAOwLdlsFTJDaS',
 };
 
 export const CHALLENGES = [
