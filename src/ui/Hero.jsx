@@ -22,18 +22,6 @@ export function Hero() {
         </div>
       </Reveal>
 
-      <Reveal delay={120}>
-        <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-q-cyan/30 bg-q-cyan/[0.07] px-4 py-1.5 backdrop-blur-md">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-q-cyan opacity-75" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-q-cyan" />
-          </span>
-          <span className="font-mono text-[11px] uppercase tracking-widest2 text-q-ice">
-            {EVENT.dateShort}
-          </span>
-        </div>
-      </Reveal>
-
       <Reveal delay={220}>
         <h1 className="font-display text-[2.6rem] font-bold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-[5.2rem]">
           <span className="block">Mizzou QIC</span>
