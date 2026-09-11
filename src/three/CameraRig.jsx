@@ -13,11 +13,16 @@ const _lookSmoothed = new THREE.Vector3();
  * Drives the camera along the keyframed path from scroll progress.
  *
  * Two layers of smoothing:
- *  1. `scrollState.smoothed` damps the raw scroll value, so flick-scrolling
+ *  1. `scrollState.smoothed` damps `scrollState.eased`, so flick-scrolling
  *     produces a glide rather than a jump. Every 3D stage reads this too, which
  *     keeps fades in lockstep with camera motion.
  *  2. The aim point is damped independently and more slowly than position,
  *     which reads as a camera operator turning to follow the subject.
+ *
+ * Note the target is `eased`, not `progress`: the scroll driver has already
+ * remapped scroll position so the flight slows over content (see
+ * src/scroll/pacing.js). This damping sits on top of that and handles the
+ * frame-to-frame jitter the remap does not.
  */
 export function CameraRig({ reducedMotion = false }) {
   const { camera } = useThree();
@@ -31,8 +36,8 @@ export function CameraRig({ reducedMotion = false }) {
     // ---- 1. Damp scroll progress ------------------------------------------
     const lambda = reducedMotion ? 30 : 5.5;
     scrollState.smoothed = initialized.current
-      ? damp(scrollState.smoothed, scrollState.progress, lambda, dt)
-      : scrollState.progress;
+      ? damp(scrollState.smoothed, scrollState.eased, lambda, dt)
+      : scrollState.eased;
 
     const p = scrollState.smoothed;
 
@@ -45,7 +50,12 @@ export function CameraRig({ reducedMotion = false }) {
     if (!reducedMotion) {
       const t = state.clock.elapsedTime + driftSeed.current;
       const settle = 1 - smoothstep(0.9, 1.0, p);
-      const amp = 0.5 * settle;
+      // Slowing the flight over content is only half the fix: the idle drift
+      // runs on wall-clock time, so on its own it keeps the background moving
+      // under the text even when the camera has stopped. Fold it away while a
+      // section is parked on screen.
+      const calm = 1 - 0.8 * scrollState.dwell;
+      const amp = 0.5 * settle * calm;
       _pos.x += Math.sin(t * 0.31) * amp;
       _pos.y += Math.sin(t * 0.47) * amp * 0.6;
     }

@@ -25,10 +25,12 @@ export function Chrome() {
     let raf = 0;
     let last = -1;
     const tick = () => {
+      // The readout tracks the scrollbar, but the phase label names what is
+      // actually on screen, and scroll and camera no longer advance together.
       const p = Math.round(scrollState.progress * 100);
       if (p !== last) {
         last = p;
-        setState({ pct: p, phase: phaseAt(scrollState.progress) });
+        setState({ pct: p, phase: phaseAt(scrollState.smoothed) });
       }
       raf = requestAnimationFrame(tick);
     };

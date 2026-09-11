@@ -4,6 +4,12 @@ import React, { useEffect, useRef, useState } from 'react';
  * A scroll section. Content sits in a left-hand column on large screens so the
  * right side of the 3D scene (and the chandelier HUD) stays visible.
  * Pass `center` for full-width centered layout (used by the hero).
+ *
+ * `data-dwell` marks the text block for the scroll pacing, which eases the
+ * camera down to a crawl while that block is on screen so the background stays
+ * readable behind it. It sits on the inner block rather than the <section>
+ * because the section box is mostly empty space. See src/scroll/pacing.js.
+ * Pass `dwell={false}` for a section that should not slow the flight down.
  */
 export function Section({
   id,
@@ -12,6 +18,7 @@ export function Section({
   minH = 'min-h-screen',
   center = false,
   align = 'center',
+  dwell = true,
 }) {
   const alignClass =
     align === 'start' ? 'items-start pt-28' : align === 'end' ? 'items-end pb-28' : 'items-center';
@@ -22,7 +29,10 @@ export function Section({
       className={`relative flex ${minH} w-full ${alignClass} px-5 sm:px-8 ${className}`}
     >
       <div className={`mx-auto w-full max-w-7xl ${center ? '' : 'lg:mx-0 lg:ml-[4%]'}`}>
-        <div className={center ? 'mx-auto max-w-4xl text-center' : 'w-full lg:max-w-2xl'}>
+        <div
+          data-dwell={dwell ? '' : undefined}
+          className={center ? 'mx-auto max-w-4xl text-center' : 'w-full lg:max-w-2xl'}
+        >
           {children}
         </div>
       </div>

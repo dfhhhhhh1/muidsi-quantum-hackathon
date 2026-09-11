@@ -7,10 +7,18 @@
  * switching on, the progress bar) subscribe explicitly and throttle themselves.
  */
 export const scrollState = {
-  /** Raw ScrollTrigger progress, 0 -> 1. */
+  /** Raw ScrollTrigger progress, 0 -> 1. Matches the scrollbar exactly. */
   progress: 0,
-  /** Frame-damped progress. This is what the camera and 3D stages should read. */
+  /**
+   * `progress` remapped by the pacing curve in ./pacing.js, so the camera
+   * slows over content and speeds up between sections. This, not `progress`,
+   * is where the camera is being asked to go.
+   */
+  eased: 0,
+  /** Frame-damped `eased`. This is what the camera and 3D stages should read. */
   smoothed: 0,
+  /** 0 = in a gap between sections, 1 = a section fully owns the viewport. */
+  dwell: 0,
   /** Signed scroll velocity, useful for motion-reactive effects. */
   velocity: 0,
 };
